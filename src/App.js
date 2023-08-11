@@ -4,7 +4,8 @@ import { Container } from "./Components/Container.styled";
 import { Body } from "./Components/Body.styled";
 
 import WeatherLoader from "./Components/WeatherLoader";
-import { Input } from "./Components/input.styled";
+import { Input } from "./Components/Input.styled";
+import { Button } from "./Components/Button.styled";
 
 const api = {
   key: "4ff50176f17a1a9eec162b0203a0abad",
@@ -42,15 +43,12 @@ function App() {
         {isLoading ? <WeatherLoader /> : null}
 
         <h1>Weather App</h1>
-        <Input>
-          <input
-            type="text"
-            placeholder="Enter city/town..."
-            className="inp"
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </Input>
-        <button onClick={searchHandler}>Search</button>
+        <Input
+          type="text"
+          placeholder="Enter city or country..."
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <Button onClick={searchHandler}>Search</Button>
         {weather.main ? (
           <div>
             <p>City: {weather.name}</p>

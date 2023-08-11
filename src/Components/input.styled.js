@@ -1,17 +1,15 @@
 import styled from "styled-components";
 
-const Input = styled.div`
+const Input = styled.input`
   border: none;
-  -webkit-appearance: none;
-  -ms-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+
   background: #f2f2f2;
-  padding: var(--field-padding);
+  padding: 3px;
   border-radius: 3px;
-  width: 150px;
+  width: 170px;
+  height: 25px;
   outline: none;
-  font-size: 14px;
+  font-size: 18px;
 `;
 
 export { Input };
