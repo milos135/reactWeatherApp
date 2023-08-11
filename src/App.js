@@ -16,18 +16,24 @@ function App() {
   const [background, setBackground] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const searchPressed = () => {
+  const searchHandler = async () => {
     setIsLoading(true);
-    fetch(`${api.base}weather?q=${search}&units=metric&APPID=${api.key}`)
-      .then((res) => res.json())
+    try {
+      await fetch(
+        `${api.base}weather?q=${search}&units=metric&APPID=${api.key}`
+      )
+        .then((res) => res.json())
 
-      .then((result) => {
-        setWeather(result);
-        setIsLoading(false);
+        .then((result) => {
+          setWeather(result);
+          setIsLoading(false);
+        });
+      fetch(`https://source.unsplash.com/1600x900/?${search}`).then((res) => {
+        setBackground(res.url);
       });
-    fetch(`https://source.unsplash.com/1600x900/?${search}`).then((res) => {
-      setBackground(res.url);
-    });
+    } catch (SpeechSynthesisErrorEvent) {
+      SpeechSynthesisErrorEvent({ message: "Not found}" });
+    }
   };
 
   return (
@@ -35,34 +41,23 @@ function App() {
       <Container>
         {isLoading ? <WeatherLoader /> : null}
 
-        <div>
-          <header>
-            <h1>Weather App</h1>
+        <h1>Weather App</h1>
 
-            <div>
-              <input
-                type="text"
-                placeholder="Enter city/town..."
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <button onClick={searchPressed}>Search</button>
-            </div>
-
-            {typeof weather.main !== "undefined" ? (
-              <div>
-                <p>City: {weather.name}</p>
-
-                <p>Temperature: {weather.main.temp}°C</p>
-
-                <p> Weather: {weather.weather[0].main}</p>
-                <p>({weather.weather[0].description})</p>
-                <p>Humidity: {weather.main.humidity}%</p>
-              </div>
-            ) : (
-              ""
-            )}
-          </header>
-        </div>
+        <input
+          type="text"
+          placeholder="Enter city/town..."
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button onClick={searchHandler}>Search</button>
+        {weather.main ? (
+          <div>
+            <p>City: {weather.name}</p>
+            <p>Temperature: {weather.main.temp}°C</p>
+            <p>Weather: {weather.weather[0].main}</p>
+            <p>({weather.weather[0].description})</p>
+            <p>Humidity: {weather.main.humidity}%</p>
+          </div>
+        ) : null}
       </Container>
     </Body>
   );
