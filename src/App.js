@@ -19,20 +19,17 @@ function App() {
   const searchHandler = async () => {
     setIsLoading(true);
     try {
-      await fetch(
+      const response = await fetch(
         `${api.base}weather?q=${search}&units=metric&APPID=${api.key}`
-      )
-        .then((res) => res.json())
-
-        .then((result) => {
-          setWeather(result);
-          setIsLoading(false);
-        });
+      );
+      const data = await response.json();
+      setWeather(data);
+      setIsLoading(false);
       fetch(`https://source.unsplash.com/1600x900/?${search}`).then((res) => {
         setBackground(res.url);
       });
-    } catch (SpeechSynthesisErrorEvent) {
-      SpeechSynthesisErrorEvent({ message: "Not found}" });
+    } catch (error) {
+      throw error;
     }
   };
 
