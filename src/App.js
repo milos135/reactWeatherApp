@@ -4,6 +4,7 @@ import { Container } from "./Components/Container.styled";
 import { Body } from "./Components/Body.styled";
 
 import WeatherLoader from "./Components/WeatherLoader";
+import { Input } from "./Components/input.styled";
 
 const api = {
   key: "4ff50176f17a1a9eec162b0203a0abad",
@@ -24,10 +25,12 @@ function App() {
       );
       const data = await response.json();
       setWeather(data);
+
+      const res = await fetch(
+        `https://source.unsplash.com/1600x900/?${search}`
+      );
+      setBackground(res.url);
       setIsLoading(false);
-      fetch(`https://source.unsplash.com/1600x900/?${search}`).then((res) => {
-        setBackground(res.url);
-      });
     } catch (error) {
       throw error;
     }
@@ -39,12 +42,14 @@ function App() {
         {isLoading ? <WeatherLoader /> : null}
 
         <h1>Weather App</h1>
-
-        <input
-          type="text"
-          placeholder="Enter city/town..."
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <Input>
+          <input
+            type="text"
+            placeholder="Enter city/town..."
+            className="inp"
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </Input>
         <button onClick={searchHandler}>Search</button>
         {weather.main ? (
           <div>
